@@ -3,6 +3,8 @@
 
 #include "NodoGeneral.h"
 #include <queue>
+#include <iterator>
+#include <iostream>
 
 template <class T>
 NodoGeneral<T>:: NodoGeneral(){
@@ -11,7 +13,7 @@ NodoGeneral<T>:: NodoGeneral(){
 
 template <class T>
 NodoGeneral<T>:: ~NodoGeneral(){
-    list<NodoGeneral<T>*>::iterator it=this->desc.begin();
+    typename list<NodoGeneral<T>*>::iterator it=this->desc.begin();
 
     for(; it != this->desc.end(); it++){
         delete *it;
@@ -48,7 +50,7 @@ bool NodoGeneral<T>::insertarNodo(T padre, T n){
         this->adicionarDesc(n);
         return true;
     } else {
-        list<NodoGeneral<T>*>::iterator it=this->desc.begin();
+        typename list<NodoGeneral<T>*>::iterator it=this->desc.begin();
 
         for(; it != this->desc.end(); it++){
             if((*it)->insertarNodo(padre, n)){
@@ -62,7 +64,7 @@ bool NodoGeneral<T>::insertarNodo(T padre, T n){
 template<class T>
 bool NodoGeneral<T>::eliminarNodo(T n){
 
-    list<NodoGeneral<T>*>::iterator it=this->desc.begin();
+    typename list<NodoGeneral<T>*>::iterator it=this->desc.begin();
 
     for(; it != this->desc.end(); it++){
 
@@ -82,7 +84,7 @@ bool NodoGeneral<T>::eliminarNodo(T n){
 template<class T>
 bool NodoGeneral<T>::eliminarDesc(T& val){
 
-    list<NodoGeneral<T>*>::iterator it=this->desc.begin();
+    typename list<NodoGeneral<T>*>::iterator it=this->desc.begin();
     NodoGeneral<T>* nodo;
     bool eliminado = false;
 
@@ -109,7 +111,7 @@ bool NodoGeneral<T>::buscarNodo(T n){
         return true;
     }
 
-    list<NodoGeneral<T>*>::iterator it=this->desc.begin();
+    typename list<NodoGeneral<T>*>::iterator it=this->desc.begin();
 
     for(; it != this->desc.end(); it++){
         if((*it)->buscarNodo(n)){
@@ -133,7 +135,7 @@ int NodoGeneral<T>::altura(){
         altura=0;
     } else {
         int alturaH;
-        list<NodoGeneral<T>*>::iterator it = this->desc.begin();
+        typename list<NodoGeneral<T>*>::iterator it = this->desc.begin();
 
         for(; it!=this->desc.end();it++){
             alturaH=(*it)->altura();
@@ -153,7 +155,7 @@ void NodoGeneral<T>::preOrden(){
 
     cout<<this->obtenerDato()<<" ";
 
-    list<NodoGeneral<T>*>::iterator it = this->desc.begin();
+    typename list<NodoGeneral<T>*>::iterator it = this->desc.begin();
 
     for(; it!=this->desc.end(); it++){
         (*it)->preOrden();
@@ -164,7 +166,7 @@ void NodoGeneral<T>::preOrden(){
 template<class T>
 void NodoGeneral<T>::posOrden(){
 
-    list<NodoGeneral<T>*>::iterator it = this->desc.begin();
+    typename list<NodoGeneral<T>*>::iterator it = this->desc.begin();
 
     for(; it!=this->desc.end(); it++){
         (*it)->posOrden();
@@ -185,7 +187,7 @@ void NodoGeneral<T>::nivelOrden(){
 
         cout<<(cola.front())->obtenerDato()<<" ";
 
-        for( list<NodoGeneral<T>*>::iterator it = (cola.front())->desc.begin(); it!=(cola.front())->desc.end(); it++){
+        for( typename list<NodoGeneral<T>*>::iterator it = (cola.front())->desc.begin(); it!=(cola.front())->desc.end(); it++){
             cola.push(*it);
         }
 

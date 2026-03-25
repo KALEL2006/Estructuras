@@ -1,6 +1,8 @@
 #ifndef __ARBOLEGENERAL_H__
 #define __ARBOLEGENERAL_H__
 
+#include "NodoGeneral.h"
+
 using namespace std;
 
 template <class T>

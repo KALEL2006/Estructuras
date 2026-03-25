@@ -96,7 +96,7 @@ unsigned int ArbolGeneral<T>::tamano() {
         tam=0;
     } else {
         tam=1;
-        list<NodoGeneral<T>*>::iterator it = this->raiz->desc.begin();
+        typename list<NodoGeneral<T>*>::iterator it = this->raiz->desc.begin();
 
         for(; it!=this->raiz->desc.end();it++){
             tam+=(*it)->tamano();
