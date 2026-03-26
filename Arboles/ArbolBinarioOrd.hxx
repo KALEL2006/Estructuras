@@ -7,27 +7,34 @@
 
 template <class T>
 ArbolBinarioOrd<T>::ArbolBinarioOrd() {
-    
+    this->raiz=NULL;
 }
 
 template <class T>
 ArbolBinarioOrd<T>::~ArbolBinarioOrd() {
-    
+    if(this->raiz != NULL){
+        delete this->raiz;
+        this->raiz=NULL;
+    }
 }
 
 template <class T>
 bool ArbolBinarioOrd<T>::esVacio() {
-    
+    return this->raiz=NULL;
 }
 
 template <class T>
 T ArbolBinarioOrd<T>::datoRaiz() {
-    
+    return this->raiz->obtenerDato();
 }
 
 template <class T>
 int ArbolBinarioOrd<T>::altura() {
-    
+    if(this->esVacio()){
+        return -1;
+    } else {
+        return this->raiz->altura();
+    }
 }
 
 template <class T>
@@ -57,7 +64,9 @@ void ArbolBinarioOrd<T>::preOrden() {
 
 template <class T>
 void ArbolBinarioOrd<T>::inOrden() {
-    
+    if(!this->esVacio()){
+        this->raiz->inOrden();
+    }
 }
 
 template <class T>

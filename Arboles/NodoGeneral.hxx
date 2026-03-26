@@ -133,6 +133,7 @@ int NodoGeneral<T>::altura(){
 
     if(this->esHoja()){
         altura=0;
+        return altura;
     } else {
         int alturaH;
         typename list<NodoGeneral<T>*>::iterator it = this->desc.begin();
