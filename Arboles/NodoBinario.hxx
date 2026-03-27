@@ -7,47 +7,50 @@
 
 template <class T>
 NodoBinario<T>::NodoBinario() {
-    
+    this->hijoIzq=NULL;
+    this->hijoDer=NULL;
 }
 
 template <class T>
 NodoBinario<T>::NodoBinario(T val) {
-    
+    NodoBinario<T>* nodo;
+    nodo->fijarDato(val);
 }
 
 template <class T>
 NodoBinario<T>::~NodoBinario() {
-    
+    delete this->hijoIzq;
+    delete this->hijoDer;
 }
 
 template <class T>
 T NodoBinario<T>::obtenerDato() {
-    
+    return this->dato;
 }
 
 template <class T>
 void NodoBinario<T>::fijarDato(T val) {
-    
+    this->dato=val;
 }
 
 template <class T>
 NodoBinario<T>* NodoBinario<T>::obtenerHijoIzq() {
-    
+    return this->hijoIzq;
 }
 
 template <class T>
 NodoBinario<T>* NodoBinario<T>::obtenerHijoDer() {
-    
+    return this->hijoDer;
 }
 
 template <class T>
 void NodoBinario<T>::fijarHijoIzq(NodoBinario<T>* izq) {
-    
+    this->hijoIzq=izq;
 }
 
 template <class T>
 void NodoBinario<T>::fijarHijoDer(NodoBinario<T>* der) {
-    
+    this->hijoDer=der;
 }
 
 template <class T>
@@ -97,6 +100,24 @@ int NodoBinario<T>::altura(){
 }
 
 template<class T>
+int NodoBinario<T>::tamano(){
+    int tamano = 1;
+
+    if(this->hijoIzq != NULL){
+        tamano += this->hijoIzq->tamano();
+    }
+
+
+    if(this->hijoDer != NULL){
+        tamano += this->hijoDer->tamano();
+    }
+
+    return tamano;
+
+}
+
+
+template<class T>
 void NodoBinario<T>::inOrden(){
 
     if(this->hijoIzq != NULL){
@@ -108,6 +129,36 @@ void NodoBinario<T>::inOrden(){
     if(this->hijoDer != NULL){
         this->hijoDer->inOrden();
     }
+}
+
+template<class T>
+void NodoBinario<T>::preOrden(){
+
+    cout<<this->obtenerDato()<<" ";
+
+    if(this->hijoIzq != NULL){
+        this->hijoIzq->preOrden();
+    }
+
+    if(this->hijoDer != NULL){
+        this->hijoDer->preOrden();
+    }
+
+}
+
+template<class T>
+void NodoBinario<T>::posOrden(){
+
+    if(this->hijoIzq != NULL){
+        this->hijoIzq->posOrden();
+    }
+
+    if(this->hijoDer != NULL){
+        this->hijoDer->posOrden();
+    }
+
+    cout<<this->obtenerDato()<<" ";
+
 }
 
 #endif

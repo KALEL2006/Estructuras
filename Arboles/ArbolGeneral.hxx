@@ -107,9 +107,7 @@ unsigned int ArbolGeneral<T>::tamano() {
 
 template <class T>
 void ArbolGeneral<T>::preOrden() {
-    if(this->esVacio()){
-        cout<<" "<<endl;
-    } else {
+    if(!this->esVacio()){
         this->raiz->preOrden();
     }
 }

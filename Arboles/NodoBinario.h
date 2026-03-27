@@ -21,6 +21,9 @@ public:
     bool esHoja();
     int altura();
     void inOrden();
+    void preOrden();
+    void posOrden();
+    int tamano();
 };
 
 #include "NodoBinario.hxx"
