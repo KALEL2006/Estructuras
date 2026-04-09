@@ -1,19 +1,19 @@
-#ifndef ARBOLBINARIOORD_HXX
-#define ARBOLBINARIOORD_HXX
+#ifndef ARBOLAVL_HXX
+#define ARBOLAVL_HXX
 
-#include "ArbolBinarioOrd.h"
+#include "ArbolAVL.h"
 #include <iostream>
 #include <queue>
 
 using namespace std;
 
 template <class T>
-ArbolBinarioOrd<T>::ArbolBinarioOrd() {
+ArbolAVL<T>::ArbolAVL() {
     this->raiz=NULL;
 }
 
 template <class T>
-ArbolBinarioOrd<T>::~ArbolBinarioOrd() {
+ArbolAVL<T>::~ArbolAVL() {
     if(this->raiz != NULL){
         delete this->raiz;
         this->raiz=NULL;
@@ -21,17 +21,17 @@ ArbolBinarioOrd<T>::~ArbolBinarioOrd() {
 }
 
 template <class T>
-bool ArbolBinarioOrd<T>::esVacio() {
+bool ArbolAVL<T>::esVacio() {
     return this->raiz==NULL;
 }
 
 template <class T>
-T ArbolBinarioOrd<T>::datoRaiz() {
+T ArbolAVL<T>::datoRaiz() {
     return this->raiz->obtenerDato();
 }
 
 template <class T>
-int ArbolBinarioOrd<T>::altura() {
+int ArbolAVL<T>::altura() {
     if(this->esVacio()){
         return -1;
     } else {
@@ -40,7 +40,7 @@ int ArbolBinarioOrd<T>::altura() {
 }
 
 template <class T>
-int ArbolBinarioOrd<T>::tamano() {
+int ArbolAVL<T>::tamano() {
     if(this->esVacio()){
         return 0;
     } else {
@@ -49,7 +49,7 @@ int ArbolBinarioOrd<T>::tamano() {
 }
 
 template <class T>
-bool ArbolBinarioOrd<T>::insertar(T val) {
+bool ArbolAVL<T>::insertar(T val) {
 
     bool insertado = false;
 
@@ -94,7 +94,7 @@ bool ArbolBinarioOrd<T>::insertar(T val) {
 }
 
 template <class T>
-bool ArbolBinarioOrd<T>::eliminar(T val) {
+bool ArbolAVL<T>::eliminar(T val) {
 
     if(this->esVacio()){
         return false;
@@ -177,7 +177,7 @@ bool ArbolBinarioOrd<T>::eliminar(T val) {
 }
 
 template <class T>
-bool ArbolBinarioOrd<T>::buscar(T val) {
+bool ArbolAVL<T>::buscar(T val) {
 
     if(this->esVacio()){
         return false;
@@ -204,28 +204,28 @@ bool ArbolBinarioOrd<T>::buscar(T val) {
 }
 
 template <class T>
-void ArbolBinarioOrd<T>::preOrden() {
+void ArbolAVL<T>::preOrden() {
     if(!this->esVacio()){
         this->raiz->preOrden();
     }
 }
 
 template <class T>
-void ArbolBinarioOrd<T>::inOrden() {
+void ArbolAVL<T>::inOrden() {
     if(!this->esVacio()){
         this->raiz->inOrden();
     }
 }
 
 template <class T>
-void ArbolBinarioOrd<T>::posOrden() {
+void ArbolAVL<T>::posOrden() {
     if(!this->esVacio()){
         this->raiz->posOrden();
     }
 }
 
 template <class T>
-void ArbolBinarioOrd<T>::nivelOrden(){
+void ArbolAVL<T>::nivelOrden(){
 
     if(!this->esVacio()){
         queue<NodoBinario<T>*> cola;

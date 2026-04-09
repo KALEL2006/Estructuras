@@ -2,8 +2,9 @@
 #define NODOBINARIO_HXX
 
 #include "NodoBinario.h"
-#include <iterator>
 #include <iostream>
+
+using namespace std;
 
 template <class T>
 NodoBinario<T>::NodoBinario() {
@@ -13,14 +14,23 @@ NodoBinario<T>::NodoBinario() {
 
 template <class T>
 NodoBinario<T>::NodoBinario(T val) {
-    NodoBinario<T>* nodo;
-    nodo->fijarDato(val);
+    this->hijoIzq=NULL;
+    this->hijoDer=NULL;
+    this->dato=val;
 }
 
 template <class T>
 NodoBinario<T>::~NodoBinario() {
-    delete this->hijoIzq;
-    delete this->hijoDer;
+    if(this->hijoIzq!=NULL){
+        delete this->hijoIzq;
+        this->hijoIzq = NULL;
+    }
+
+    if(this->hijoDer!=NULL){
+        delete this->hijoDer;
+        this->hijoDer = NULL;
+    }
+    
 }
 
 template <class T>
@@ -107,7 +117,6 @@ int NodoBinario<T>::tamano(){
         tamano += this->hijoIzq->tamano();
     }
 
-
     if(this->hijoDer != NULL){
         tamano += this->hijoDer->tamano();
     }
@@ -134,7 +143,7 @@ void NodoBinario<T>::inOrden(){
 template<class T>
 void NodoBinario<T>::preOrden(){
 
-    cout<<this->obtenerDato()<<" ";
+    cout<<this->dato<<" ";
 
     if(this->hijoIzq != NULL){
         this->hijoIzq->preOrden();
@@ -157,7 +166,7 @@ void NodoBinario<T>::posOrden(){
         this->hijoDer->posOrden();
     }
 
-    cout<<this->obtenerDato()<<" ";
+    cout<<this->dato<<" ";
 
 }
 
