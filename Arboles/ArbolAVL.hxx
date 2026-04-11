@@ -50,131 +50,182 @@ int ArbolAVL<T>::tamano() {
 
 template <class T>
 bool ArbolAVL<T>::insertar(T val) {
-
     bool insertado = false;
-
-    NodoBinario<T>* nuevo = new NodoBinario<T>;
-    nuevo->fijarDato(val);
-
-    if(this->esVacio()){
-        this->raiz=nuevo;
-        return true;
-    }
-
-    NodoBinario<T>* nodo = this->raiz;
-
-    while(!insertado && nodo!=NULL){
-
-        if(val > nodo->obtenerDato()){
-
-            if(nodo->obtenerHijoDer()!=NULL){
-                nodo=nodo->obtenerHijoDer();
-            } else {
-                nodo->fijarHijoDer(nuevo);
-                insertado=true;
-            }
-
-        } else if (val < nodo->obtenerDato()){
-            
-            if(nodo->obtenerHijoIzq()!=NULL){
-                nodo=nodo->obtenerHijoIzq();
-            } else {
-                nodo->fijarHijoIzq(nuevo);
-                insertado=true;
-            }
-        } else {
-            delete nuevo;
-            insertado = false;
-            break;
-        }
-
-    }
-        
-     return insertado;
+    this->raiz = insertarAVL(this->raiz, val, insertado);
+    return insertado;
 }
 
 template <class T>
-bool ArbolAVL<T>::eliminar(T val) {
-
-    if(this->esVacio()){
-        return false;
-    }
-
-    NodoBinario<T>* padre = NULL;
-    NodoBinario<T>* nodo = this->raiz;
-
-    // Buscar
-    while(nodo != NULL && nodo->obtenerDato() != val){
-        padre = nodo;
-
-        if(val < nodo->obtenerDato()){
-            nodo = nodo->obtenerHijoIzq();
-        } else {
-            nodo = nodo->obtenerHijoDer();
-        }
-    }
+NodoBinario<T>* ArbolAVL<T>::insertarAVL(NodoBinario<T>* nodo, T val, bool& insertado){
 
     if(nodo == NULL){
-        return false;
+        insertado = true;
+        return new NodoBinario<T>(val);
     }
 
-    // Caso 3: dos hijos (máximo del subárbol izquierdo)
-    if(nodo->obtenerHijoIzq() != NULL && nodo->obtenerHijoDer() != NULL){
+    if(val < nodo->obtenerDato()){
+        nodo->fijarHijoIzq(insertarAVL(nodo->obtenerHijoIzq(), val, insertado));
+    }
+    else if(val > nodo->obtenerDato()){
+        nodo->fijarHijoDer(insertarAVL(nodo->obtenerHijoDer(), val, insertado));
+    }
+    else{
+        insertado = false; // duplicado
+        return nodo;
+    }
+    //de abajo para arriba
+    return balancear(nodo);
+}
 
-        NodoBinario<T>* padreReemp = nodo;
+template <class T>
+bool ArbolAVL<T>::eliminar(T val){
+    bool eliminado = false;
+    this->raiz = eliminarAVL(this->raiz, val, eliminado);
+    return eliminado;
+}
+
+template <class T>
+NodoBinario<T>* ArbolAVL<T>::eliminarAVL(NodoBinario<T>* nodo, T val, bool& eliminado){
+
+    if(nodo == NULL){
+        eliminado = false;
+        return NULL;
+    }
+
+    if(val < nodo->obtenerDato()){
+        nodo->fijarHijoIzq(eliminarAVL(nodo->obtenerHijoIzq(), val, eliminado));
+    }
+    else if(val > nodo->obtenerDato()){
+        nodo->fijarHijoDer(eliminarAVL(nodo->obtenerHijoDer(), val, eliminado));
+    }
+    else{
+        eliminado = true;
+
+        // Caso 1: hoja
+        if(nodo->obtenerHijoIzq() == NULL && nodo->obtenerHijoDer() == NULL){
+            delete nodo;
+            return NULL;
+        }
+
+        // Caso 2: un hijo
+        if(nodo->obtenerHijoIzq() == NULL){
+            NodoBinario<T>* temp = nodo->obtenerHijoDer();
+            nodo->fijarHijoDer(NULL);
+            delete nodo;
+            return temp;
+        }
+
+        if(nodo->obtenerHijoDer() == NULL){
+            NodoBinario<T>* temp = nodo->obtenerHijoIzq();
+            nodo->fijarHijoIzq(NULL);
+            delete nodo;
+            return temp;
+        }
+
+        // Caso 3: dos hijos
         NodoBinario<T>* reemplazo = nodo->obtenerHijoIzq();
 
         while(reemplazo->obtenerHijoDer() != NULL){
-            padreReemp = reemplazo;
             reemplazo = reemplazo->obtenerHijoDer();
         }
 
         nodo->fijarDato(reemplazo->obtenerDato());
 
-        padre = padreReemp;
-        nodo = reemplazo;
+        nodo->fijarHijoIzq(
+            eliminarAVL(nodo->obtenerHijoIzq(), reemplazo->obtenerDato(), eliminado)
+        );
     }
 
-    // Caso 1: hoja
-    if(nodo->esHoja()){
-        if(padre == NULL){
-            this->raiz = NULL;
-        }
-        else if(padre->obtenerHijoIzq() == nodo){
-            padre->fijarHijoIzq(NULL);
-        }
-        else{
-            padre->fijarHijoDer(NULL);
-        }
-
-        delete nodo;
-        return true;
-    }
-
-    // Caso 2: un hijo
-    NodoBinario<T>* hijo;
-
-    if(nodo->obtenerHijoIzq() != NULL){
-        hijo = nodo->obtenerHijoIzq();
-    } else {
-        hijo = nodo->obtenerHijoDer();
-    }
-
-    if(padre == NULL){
-        this->raiz = hijo;
-    }
-    else if(padre->obtenerHijoIzq() == nodo){
-        padre->fijarHijoIzq(hijo);
-    }
-    else{
-        padre->fijarHijoDer(hijo);
-    }
-
-    nodo->fijarHijoIzq(NULL);
-    nodo->fijarHijoDer(NULL);
-    delete nodo;
-    return true;
+    return balancear(nodo);
 }
+
+template <class T>
+NodoBinario<T>* ArbolAVL<T>::rotarDerecha(NodoBinario<T>* nodo){
+
+    NodoBinario<T>* n_padre = nodo->obtenerHijoIzq();
+    nodo->fijarHijoIzq(n_padre->obtenerHijoDer());
+    n_padre->fijarHijoDer(nodo);
+    
+    return n_padre;
+}
+
+template <class T>
+NodoBinario<T>* ArbolAVL<T>::rotarIzquierda(NodoBinario<T>* nodo){
+
+    NodoBinario<T>* n_padre = nodo->obtenerHijoDer();
+    nodo->fijarHijoDer(n_padre->obtenerHijoIzq());
+    n_padre->fijarHijoIzq(nodo);
+    
+    return n_padre;
+}
+
+template <class T>
+NodoBinario<T>* ArbolAVL<T>::rotarIzqDer(NodoBinario<T>* nodo) {
+    nodo->fijarHijoIzq(rotarIzquierda(nodo->obtenerHijoIzq()));
+    return rotarDerecha(nodo);
+}
+
+template <class T>
+NodoBinario<T>* ArbolAVL<T>::rotarDerIzq(NodoBinario<T>* nodo) {
+    nodo->fijarHijoDer(rotarDerecha(nodo->obtenerHijoDer()));
+    return rotarIzquierda(nodo);
+}
+
+template <class T>
+NodoBinario<T>* ArbolAVL<T>::balancear(NodoBinario<T>* nodo){
+
+    int diferencia = obtenerBalance(nodo);
+
+    if(diferencia == 2){
+        NodoBinario<T>* hijoIzq = nodo->obtenerHijoIzq();
+        int dif_hijo = obtenerBalance(hijoIzq);
+
+        if(dif_hijo >= 0){
+            return rotarDerecha(nodo);
+        } else {
+            return rotarIzqDer(nodo);
+        }
+    }
+
+    if(diferencia == -2){
+        NodoBinario<T>* hijoDer = nodo->obtenerHijoDer();
+        int dif_hijo = obtenerBalance(hijoDer);
+
+        if(dif_hijo <= 0){
+            return rotarIzquierda(nodo);
+        } else {
+            return rotarDerIzq(nodo);
+        }
+    }
+
+    return nodo;
+}
+
+template <class T>
+int ArbolAVL<T>::obtenerBalance(NodoBinario<T>* nodo){
+    
+    int h_hijoIzq, h_hijoDer, diferencia;
+
+    if(nodo == NULL) return 0;
+
+    if(nodo->obtenerHijoIzq()==NULL){
+        h_hijoIzq=-1;
+    } else {
+        h_hijoIzq = nodo->obtenerHijoIzq()->altura();
+    }
+
+    if(nodo->obtenerHijoDer()==NULL){
+        h_hijoDer=-1;
+    } else {
+        h_hijoDer = nodo->obtenerHijoDer()->altura();
+    }
+
+    diferencia = h_hijoIzq - h_hijoDer;
+
+    return diferencia;
+
+}
+
 
 template <class T>
 bool ArbolAVL<T>::buscar(T val) {

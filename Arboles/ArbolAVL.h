@@ -21,6 +21,17 @@ public:
     void inOrden();
     void posOrden();
     void nivelOrden();
+
+    NodoBinario<T>* rotarIzquierda(NodoBinario<T>* nodo);
+    NodoBinario<T>* rotarDerecha(NodoBinario<T>* nodo);
+    NodoBinario<T>* rotarIzqDer(NodoBinario<T>* nodo);
+    NodoBinario<T>* rotarDerIzq(NodoBinario<T>* nodo);
+
+    NodoBinario<T>* balancear(NodoBinario<T>* nodo);
+    int obtenerBalance(NodoBinario<T>* nodo);
+
+    NodoBinario<T>* insertarAVL(NodoBinario<T>* nodo, T val, bool& insertado);
+    NodoBinario<T>* eliminarAVL(NodoBinario<T>* nodo, T val, bool& eliminado);
 };
 
 #include "ArbolAVL.hxx"
