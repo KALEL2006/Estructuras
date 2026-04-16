@@ -49,7 +49,7 @@ int ArbolAVL<T>::tamano() {
 }
 
 template <class T>
-bool ArbolAVL<T>::insertar(T val) {
+bool ArbolAVL<T>::insert(T val) {
     bool insertado = false;
     this->raiz = insertarAVL(this->raiz, val, insertado);
     return insertado;
@@ -78,7 +78,7 @@ NodoBinario<T>* ArbolAVL<T>::insertarAVL(NodoBinario<T>* nodo, T val, bool& inse
 }
 
 template <class T>
-bool ArbolAVL<T>::eliminar(T val){
+bool ArbolAVL<T>::erase(T val){
     bool eliminado = false;
     this->raiz = eliminarAVL(this->raiz, val, eliminado);
     return eliminado;
